@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="cordova-plugin-google-pay" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>GooglePayPlugin</name>
+    <description>Google Pay Plugin for Cordova</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova, google pay</keywords>
+    <engines>
+        <engine name="cordova" version=">=9.0.0" />
+    </engines>
+
+    <js-module src="www/googlepay.js" name="GooglePayPlugin" onload="true">
+        <clobbers target="cordova.plugins.GooglePayPlugin" />
+    </js-module>
+    
+    <platform name="android">
+
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true" />
+        </config-file>
+
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="GooglePayPlugin">
+                <param name="android-package" value="com.plugin.googlepay.GooglePayPlugin" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/GooglePayPlugin.java" target-dir="src/com/plugin/googlepay" />
+        <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+    </platform>
+</plugin>
