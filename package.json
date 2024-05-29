@@ -1,13 +1,14 @@
 {
   "name": "cordova-plugin-google-pay",
   "version": "1.0.0",
-  "description": "Cordova plugin for Google Pay",
+  "description": "Cordova plugin for GooglePay",
   "cordova": {
     "id": "cordova-plugin-google-pay",
     "platforms": ["android"]
   },
   "keywords": [
-    "cordova",
+    "ecosystem:cordova",
+    "cordova-android",
     "google",
     "pay",
     "payments"
@@ -16,5 +17,13 @@
     "cordova": ">=9.0.0"
   },
   "author": "Boris Kamenov",
-  "license": "Apache 2.0"
+  "license": "Apache 2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bkamenov/cordova-plugin-google-pay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bkamenov/cordova-plugin-google-pay/issues"
+  },
+  "homepage": "https://github.com/bkamenov/cordova-plugin-google-pay"
 }
