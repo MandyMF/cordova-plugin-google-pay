@@ -1,6 +1,6 @@
 {
   "name": "@bkamenov/cordova-plugin-google-pay",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cordova plugin for GooglePay",
   "cordova": {
     "id": "cordova-plugin-google-pay",
