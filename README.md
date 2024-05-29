@@ -5,10 +5,10 @@ An Android only plugin for processing Google Pay payments from your app.
 For stable relases type:
 
 ```shell
-cordova plugin add cordova-plugin-google-pay
+cordova plugin add @bkamenov/cordova-plugin-google-pay
 ```
 
- For latest releases type:
+For latest releases type:
 
 ```shell
 cordova plugin add https://github.com/bkamenov/cordova-plugin-google-pay
@@ -65,7 +65,7 @@ const paymentDataRequest = {
   },
   transactionInfo: {
     totalPriceStatus: 'FINAL',
-    totalPrice: '12.34', 
+    totalPrice: '12.34',
     currencyCode: 'USD',
     countryCode: 'US'
   }
@@ -87,7 +87,7 @@ const canMakePaymentRequest = {
 };
 
 //Call this when you want to display the button.
-cordova.plugins.GooglePayPlugin.canMakePayment(canMakePaymentRequest, 
+cordova.plugins.GooglePayPlugin.canMakePayment(canMakePaymentRequest,
 (result) => {
   if(result.canMakePayments) {
 
@@ -135,5 +135,3 @@ cordova.plugins.GooglePayPlugin.canMakePayment(canMakePaymentRequest,
 <button id="myGooglePayButton" style="visibility:hidden">Place order</button>
 ...
 ```
-
-
