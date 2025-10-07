@@ -2,12 +2,14 @@ package com.plugin.googlepay;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.wallet.AutoResolveHelper;
 import com.google.android.gms.wallet.IsReadyToPayRequest;
@@ -60,12 +62,45 @@ public class GooglePayPlugin extends CordovaPlugin {
             PaymentDataRequest request = createPaymentDataRequest(paymentDataRequestJson);
 
             if (request != null) {
-                Activity activity = this.cordova.getActivity();
+                final Activity activity = this.cordova.getActivity();
                 cordova.setActivityResultCallback(this);
-                AutoResolveHelper.resolveTask(
-                        paymentsClient.loadPaymentData(request),
-                        activity,
-                        LOAD_PAYMENT_DATA_REQUEST_CODE);
+
+                final Task<PaymentData> task = paymentsClient.loadPaymentData(request);
+
+                task.addOnSuccessListener(activity, paymentData -> {
+                    if (paymentData != null) {
+                        String paymentInformation = paymentData.toJson();
+                        if (paymentInformation != null) {
+                            try {
+                                JSONObject paymentResponse = new JSONObject(paymentInformation);
+                                callbackContext.success(paymentResponse);
+                            } catch (JSONException e) {
+                                callbackContext.error("Error parsing payment data: " + e.getMessage());
+                            }
+                        } else {
+                            callbackContext.error("PaymentData toJson is null");
+                        }
+                    } else {
+                        callbackContext.error("PaymentData is null");
+                    }
+                });
+
+                task.addOnFailureListener(activity, throwable -> {
+                    if (throwable instanceof ResolvableApiException) {
+                        try {
+                            ((ResolvableApiException) throwable).startResolutionForResult(
+                                    activity, LOAD_PAYMENT_DATA_REQUEST_CODE);
+                        } catch (IntentSender.SendIntentException e) {
+                            callbackContext.error("Error launching Google Pay: " + e.getMessage());
+                        }
+                    } else if (throwable instanceof ApiException) {
+                        ApiException apiEx = (ApiException) throwable;
+                        callbackContext.error("Google Pay API error: " + apiEx.getStatusCode() + " - " + apiEx.getMessage());
+                    } else {
+                        callbackContext.error("Unexpected error: " + throwable.getMessage());
+                    }
+                });
+
             } else {
                 callbackContext.error("PaymentDataRequest is null");
             }
